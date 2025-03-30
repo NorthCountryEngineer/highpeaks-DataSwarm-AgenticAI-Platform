@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  lint-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install kubectl
+        run: |
+          curl -sSLO https://dl.k8s.io/release/v1.26.0/bin/linux/amd64/kubectl
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/kubectl
+
+      - name: Validate Kubernetes manifests
+        run: kubectl apply --dry-run=client -f k8s/

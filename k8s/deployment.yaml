@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: highpeaks-flowise
+  labels:
+    app: highpeaks-flowise
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: highpeaks-flowise
+  template:
+    metadata:
+      labels:
+        app: highpeaks-flowise
+    spec:
+      containers:
+      - name: flowise
+        image: flowiseai/flowise:latest
+        imagePullPolicy: IfNotPresent
+        # Flowise listens on port 3000 by default
+        ports:
+        - containerPort: 3000
+        # Example environment variables (Flowise may support more configuration via env)
+        env:
+        - name: PORT
+          value: "3000"
